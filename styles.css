@@ -150,7 +150,7 @@ body {
   border: 1px solid black;
 }
 
-.pane {
+#game-board > * {
   font-size: 20rem;
   display: flex;
   justify-content: center;
