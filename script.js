@@ -1,15 +1,15 @@
 const gameBoardModule = (() => {
-  const gameBoard = ["x", "x", "x", "x", "x", "x", "x", "x", "x"];
+  const gameBoard = ["X", "X", "O", "X", "X", "X", "X", "X", "X"];
   return { gameBoard };
 })();
 
 const displayController = (() => {
-  const boardElement = document.getElementById("game-board");
-
   const displayChoices = gameBoard => {
     for (let i = 0; i < 9; i++) {
       let pane = document.getElementById(`pane-${i + 1}`);
-      pane.textContent = gameBoard[i];
+      let choice = document.createElement("span");
+      choice.textContent = gameBoard[i];
+      pane.appendChild(choice);
     }
   };
 
