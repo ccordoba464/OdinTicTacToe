@@ -27,6 +27,32 @@ const gameBoard = (() => {
 
 const displayController = (() => {
   const results = document.getElementById("results");
+  const player1Container = document.getElementById("player1-container");
+  const player2Container = document.getElementById("player2-container");
+
+  const displayPlayerForm = () => {
+    const playerForm1 = document.createElement("form");
+    playerForm1.id = "player-form1";
+    const nameInput1 = document.createElement("input");
+    nameInput1.placeholder = "Enter Name";
+    const submitButton1 = document.createElement("button");
+    submitButton1.id = "submit-player1";
+    submitButton1.type = "submit";
+    submitButton1.textContent = "Submit Name";
+    playerForm1.append(nameInput1, submitButton1);
+    player1Container.appendChild(playerForm1);
+
+    const playerForm2 = document.createElement("form");
+    playerForm2.id = "player-form2";
+    const nameInput2 = document.createElement("input");
+    nameInput2.placeholder = "Enter Name";
+    const submitButton2 = document.createElement("button");
+    submitButton2.id = "submit-player2";
+    submitButton2.type = "submit";
+    submitButton2.textContent = "Submit Name";
+    playerForm2.append(nameInput2, submitButton2);
+    player2Container.appendChild(playerForm2);
+  };
 
   const displayChoices = () => {
     for (let i = 0; i < 9; i++) {
@@ -43,20 +69,25 @@ const displayController = (() => {
     }
   };
 
-  return { displayChoices, displayResults };
+  return { displayChoices, displayResults, displayPlayerForm };
 })();
 
-const player = symbol => {
+const player = (symbol, name) => {
   const choosePane = paneID => {
     gameBoard.getGameBoard()[+paneID.charAt(5) - 1] = symbol;
     gameFlow.incrementTurns();
   };
-  return { symbol, choosePane };
+  return { symbol, name, choosePane };
 };
 
 const gameFlow = (() => {
-  const player0 = player("X");
-  const player1 = player("O");
+  const getNames = () => {
+    displayController.displayPlayerForm();
+  };
+
+  getNames();
+  //const player0 = player("X");
+  //const player1 = player("O");
   let turns = 0;
 
   let playerTurn = Math.random() < 0.5 ? player0 : player1;
