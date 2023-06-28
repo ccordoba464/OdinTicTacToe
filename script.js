@@ -104,6 +104,8 @@ const displayController = (() => {
       results.textContent = `WINNER: ${gameFlow.getPlayerTurn().name}`;
     } else if (result === "D") {
       results.textContent = "DRAW";
+    } else if (result == "X" || result == "O") {
+      results.textContent = `${result} goes first!`;
     }
   };
 
@@ -177,6 +179,7 @@ const gameFlow = (() => {
   let playerTurn = Math.random() < 0.5 ? player0 : player1;
 
   getNames();
+  displayController.displayResults(playerTurn.symbol);
   gameBoard.initiateBoard();
 
   return { getPlayerTurn, checkWinner, incrementTurns, player0, player1 };
