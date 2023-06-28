@@ -57,7 +57,7 @@ const displayController = (() => {
         playerForm1.remove();
         const symbol1 = document.createElement("div");
         symbol1.classList.add("symbol");
-        symbol1.textContent = "X";
+        symbol1.textContent = gameFlow.player0.symbol;
         player1Container.appendChild(symbol1);
       } else {
         alert("Enter Player 1's name");
@@ -84,7 +84,7 @@ const displayController = (() => {
         playerForm2.remove();
         const symbol2 = document.createElement("div");
         symbol2.classList.add("symbol");
-        symbol2.textContent = "O";
+        symbol2.textContent = gameFlow.player1.symbol;
         player2Container.appendChild(symbol2);
       } else {
         alert("Enter Player 1's name");
@@ -114,7 +114,7 @@ const displayController = (() => {
 
 /* PLAYER OBJECT */
 
-const player = (symbol, name) => {
+const player = (name, symbol) => {
   const choosePane = paneID => {
     gameBoard.getGameBoard()[+paneID.charAt(5) - 1] = symbol;
     gameFlow.incrementTurns();
@@ -172,8 +172,17 @@ const gameFlow = (() => {
     }
   };
 
-  const player0 = player("X", "Player 1");
-  const player1 = player("O", "Player 1");
+  let player0;
+  let player1;
+
+  if (Math.random() < 0.5) {
+    player0 = player("Player 1", "X");
+    player1 = player("Player 2", "O");
+  } else {
+    player0 = player("Player 1", "O");
+    player1 = player("Player 2", "X");
+  }
+
   let turns = 0;
 
   let playerTurn = Math.random() < 0.5 ? player0 : player1;
