@@ -137,24 +137,45 @@ body {
 }
 
 #game-container {
+  background-color: rgb(244, 236, 227);
   height: 100vh;
+  display: grid;
+  grid-template-columns: 1fr 4fr 1fr;
+  grid-template-rows: 1fr 6fr;
+}
+
+#header {
+  grid-column: 1 / 4;
+  background-color: rgb(236, 190, 106);
+  align-self: stretch;
   display: flex;
-  flex-direction: column;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
+  height: 100%;
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
+  border-bottom: 2px solid black;
 }
 
 #results {
   font-size: 3rem;
   justify-content: stretch;
   padding: 20px;
+  font-weight: bold;
 }
 
 #game-board {
+  grid-column: 2 / 3;
+  height: 600px;
+  width: 600px;
+  align-self: center;
+  justify-self: center;
+  margin: 50px;
+  background-color: rgb(236, 190, 106);
   display: grid;
   grid-template-columns: repeat(3, 200px);
   grid-template-rows: repeat(3, 200px);
   border: 1px solid black;
+  box-shadow: 4px 4px 6px rgba(0, 0, 0, 0.2);
 }
 
 #game-board > * {
