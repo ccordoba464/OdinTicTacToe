@@ -53,7 +53,12 @@ const displayController = (() => {
     submitButton1.addEventListener("click", () => {
       if (nameInput1.checkValidity()) {
         playerInfoHeader1.textContent = nameInput1.value;
+        gameFlow.player0.name = nameInput1.value;
         playerForm1.remove();
+        const symbol1 = document.createElement("div");
+        symbol1.classList.add("symbol");
+        symbol1.textContent = "X";
+        player1Container.appendChild(symbol1);
       } else {
         alert("Enter Player 1's name");
       }
@@ -75,7 +80,12 @@ const displayController = (() => {
     submitButton2.addEventListener("click", () => {
       if (nameInput2.checkValidity()) {
         playerInfoHeader2.textContent = nameInput2.value;
+        gameFlow.player1.name = nameInput2.value;
         playerForm2.remove();
+        const symbol2 = document.createElement("div");
+        symbol2.classList.add("symbol");
+        symbol2.textContent = "O";
+        player2Container.appendChild(symbol2);
       } else {
         alert("Enter Player 1's name");
       }
@@ -91,7 +101,7 @@ const displayController = (() => {
 
   const displayResults = result => {
     if (result === "W") {
-      results.textContent = `WINNER: ${gameFlow.getPlayerTurn().symbol}`;
+      results.textContent = `WINNER: ${gameFlow.getPlayerTurn().name}`;
     } else if (result === "D") {
       results.textContent = "DRAW";
     }
@@ -115,7 +125,6 @@ const player = (symbol, name) => {
 const gameFlow = (() => {
   const getNames = () => {
     displayController.displayPlayerForm();
-    boardElement.initiateBoard();
   };
 
   const getPlayerTurn = () => {
@@ -161,12 +170,14 @@ const gameFlow = (() => {
     }
   };
 
-  getNames();
-  const player0 = player("X");
-  const player1 = player("O");
+  const player0 = player("X", "Player 1");
+  const player1 = player("O", "Player 1");
   let turns = 0;
 
   let playerTurn = Math.random() < 0.5 ? player0 : player1;
 
-  return { getPlayerTurn, checkWinner, incrementTurns };
+  getNames();
+  gameBoard.initiateBoard();
+
+  return { getPlayerTurn, checkWinner, incrementTurns, player0, player1 };
 })();
