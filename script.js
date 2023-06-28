@@ -3,11 +3,18 @@ const gameBoard = (() => {
   const panes = boardElement.querySelectorAll(".pane");
   const gameBoard = [];
 
-  panes.forEach(pane => {
+  const clickStatus = Array.from({ length: 9 }, () => false);
+
+  panes.forEach((pane, index) => {
     pane.addEventListener("click", () => {
+      if (clickStatus[index]) {
+        return; // Exit early if the pane has been clicked before
+      }
       gameFlow.getPlayerTurn().choosePane(pane.id);
       displayController.displayChoices();
       gameFlow.checkWinner();
+
+      clickStatus[index] = true;
     });
   });
 
