@@ -3,11 +3,16 @@
 const gameBoard = (() => {
   const boardElement = document.getElementById("game-board");
   const panes = boardElement.querySelectorAll(".pane");
-  const gameBoard = [];
+  let gameBoard = [];
 
-  const clickStatus = Array.from({ length: 9 }, () => false);
+  let clickStatus = Array.from({ length: 9 }, () => false);
 
   const initiateBoard = () => {
+    if (gameBoard.length !== 0) {
+      gameBoard = [];
+      clickStatus = Array.from({ length: 9 }, () => false);
+      displayController.displayChoices();
+    }
     panes.forEach((pane, index) => {
       pane.addEventListener("click", () => {
         if (clickStatus[index]) {
@@ -38,7 +43,7 @@ const displayController = (() => {
   const resetButton = document.getElementById("reset-button");
 
   resetButton.addEventListener("click", () => {
-    displayPlayerForm();
+    gameFlow.startGame();
   });
 
   const displayPlayerForm = () => {
@@ -56,7 +61,6 @@ const displayController = (() => {
       document.querySelector(".symbol").remove();
     } else {
       let symbolSpans = document.querySelectorAll(".symbol");
-      console.log(symbolSpans);
       if (symbolSpans !== null) {
         symbolSpans.forEach(span => {
           span.remove();
@@ -65,6 +69,7 @@ const displayController = (() => {
     }
 
     const playerInfoHeader1 = document.getElementById("player1-header");
+    playerInfoHeader1.textContent = "Player 0";
     const playerForm1 = document.createElement("form");
     playerForm1.id = "player-form1";
     const nameInput1 = document.createElement("input");
@@ -77,6 +82,7 @@ const displayController = (() => {
     playerForm1.append(nameInput1, submitButton1);
 
     const playerInfoHeader2 = document.getElementById("player2-header");
+    playerInfoHeader2.textContent = "Player 1";
     const playerForm2 = document.createElement("form");
     playerForm2.id = "player-form2";
     const nameInput2 = document.createElement("input");
@@ -114,7 +120,7 @@ const displayController = (() => {
         symbol2.textContent = gameFlow.player1.symbol;
         player2Container.appendChild(symbol2);
       } else {
-        alert("Enter Player 1's name");
+        alert("Enter Player 2's name");
       }
     });
   };
@@ -152,12 +158,16 @@ const player = (name, symbol) => {
 /* GAME FLOW OBJECT */
 
 const gameFlow = (() => {
-  const getNames = () => {
+  const startGame = () => {
+    randomizePlayerTurn();
     displayController.displayPlayerForm();
+    displayController.displayResults(playerTurn.symbol);
+    gameBoard.initiateBoard();
+    turns = 0;
   };
 
-  const resetGame = () => {
-    displayController.displayPlayerForm();
+  const randomizePlayerTurn = () => {
+    playerTurn = Math.random() < 0.5 ? player0 : player1;
   };
 
   const getPlayerTurn = () => {
@@ -205,22 +215,18 @@ const gameFlow = (() => {
 
   let player0;
   let player1;
-
-  if (Math.random() < 0.5) {
-    player0 = player("Player 1", "X");
-    player1 = player("Player 2", "O");
-  } else {
-    player0 = player("Player 1", "O");
-    player1 = player("Player 2", "X");
-  }
-
+  let playerTurn;
   let turns = 0;
 
-  let playerTurn = Math.random() < 0.5 ? player0 : player1;
+  if (Math.random() < 0.5) {
+    player0 = player("Player 0", "X");
+    player1 = player("Player 1", "O");
+  } else {
+    player0 = player("Player 0", "O");
+    player1 = player("Player 1", "X");
+  }
 
-  getNames();
-  displayController.displayResults(playerTurn.symbol);
-  gameBoard.initiateBoard();
+  startGame();
 
   return {
     getPlayerTurn,
@@ -228,6 +234,6 @@ const gameFlow = (() => {
     incrementTurns,
     player0,
     player1,
-    resetGame,
+    startGame,
   };
 })();
