@@ -164,6 +164,8 @@ const gameFlow = (() => {
     displayController.displayResults(playerTurn.symbol);
     gameBoard.initiateBoard();
     turns = 0;
+    player0.name = "Player 0";
+    player1.name = "Player 1";
   };
 
   const randomizePlayerTurn = () => {
