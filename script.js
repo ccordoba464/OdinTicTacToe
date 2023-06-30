@@ -35,8 +35,35 @@ const displayController = (() => {
   const results = document.getElementById("results");
   const player1Container = document.getElementById("player1-container");
   const player2Container = document.getElementById("player2-container");
+  const resetButton = document.getElementById("reset-button");
+
+  resetButton.addEventListener("click", () => {
+    displayPlayerForm();
+  });
 
   const displayPlayerForm = () => {
+    if (
+      player1Container.querySelector("#player-form1") !== null &&
+      player2Container.querySelector("#player-form2") !== null
+    ) {
+      player1Container.querySelector("#player-form1").remove();
+      player2Container.querySelector("#player-form2").remove();
+    } else if (player2Container.querySelector("#player-form2") !== null) {
+      player2Container.querySelector("#player-form2").remove();
+      document.querySelector(".symbol").remove();
+    } else if (player1Container.querySelector("#player-form1") !== null) {
+      player1Container.querySelector("#player-form1").remove();
+      document.querySelector(".symbol").remove();
+    } else {
+      let symbolSpans = document.querySelectorAll(".symbol");
+      console.log(symbolSpans);
+      if (symbolSpans !== null) {
+        symbolSpans.forEach(span => {
+          span.remove();
+        });
+      }
+    }
+
     const playerInfoHeader1 = document.getElementById("player1-header");
     const playerForm1 = document.createElement("form");
     playerForm1.id = "player-form1";
@@ -48,7 +75,20 @@ const displayController = (() => {
     submitButton1.type = "button";
     submitButton1.textContent = "Submit Name";
     playerForm1.append(nameInput1, submitButton1);
+
+    const playerInfoHeader2 = document.getElementById("player2-header");
+    const playerForm2 = document.createElement("form");
+    playerForm2.id = "player-form2";
+    const nameInput2 = document.createElement("input");
+    nameInput2.placeholder = "Enter Name";
+    nameInput2.setAttribute("required", "true");
+    const submitButton2 = document.createElement("button");
+    submitButton2.id = "submit-player2";
+    submitButton2.type = "button";
+    submitButton2.textContent = "Submit Name";
+    playerForm2.append(nameInput2, submitButton2);
     player1Container.appendChild(playerForm1);
+    player2Container.appendChild(playerForm2);
 
     submitButton1.addEventListener("click", () => {
       if (nameInput1.checkValidity()) {
@@ -63,19 +103,6 @@ const displayController = (() => {
         alert("Enter Player 1's name");
       }
     });
-
-    const playerInfoHeader2 = document.getElementById("player2-header");
-    const playerForm2 = document.createElement("form");
-    playerForm2.id = "player-form2";
-    const nameInput2 = document.createElement("input");
-    nameInput2.placeholder = "Enter Name";
-    nameInput2.setAttribute("required", "true");
-    const submitButton2 = document.createElement("button");
-    submitButton2.id = "submit-player2";
-    submitButton2.type = "button";
-    submitButton2.textContent = "Submit Name";
-    playerForm2.append(nameInput2, submitButton2);
-    player2Container.appendChild(playerForm2);
 
     submitButton2.addEventListener("click", () => {
       if (nameInput2.checkValidity()) {
@@ -126,6 +153,10 @@ const player = (name, symbol) => {
 
 const gameFlow = (() => {
   const getNames = () => {
+    displayController.displayPlayerForm();
+  };
+
+  const resetGame = () => {
     displayController.displayPlayerForm();
   };
 
@@ -191,5 +222,12 @@ const gameFlow = (() => {
   displayController.displayResults(playerTurn.symbol);
   gameBoard.initiateBoard();
 
-  return { getPlayerTurn, checkWinner, incrementTurns, player0, player1 };
+  return {
+    getPlayerTurn,
+    checkWinner,
+    incrementTurns,
+    player0,
+    player1,
+    resetGame,
+  };
 })();
